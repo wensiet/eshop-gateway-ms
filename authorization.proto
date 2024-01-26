@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "wensiet.authorization.v1;authorizationv1";
+
+service Authorization {
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Register(RegisterRequest) returns (Empty) {}
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message Empty {
+
+}
