@@ -11,7 +11,7 @@ app = FastAPI(title="API_NAME",
               redoc_url='/redoc',
               openapi_url='/openapi.json')
 app.include_router(products_router, prefix="")
-app.include_router(authorization_router)
+app.include_router(authorization_router, prefix="")
 
 if __name__ == "__main__":
     uvicorn.run(app)

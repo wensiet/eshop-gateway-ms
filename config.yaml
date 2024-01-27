@@ -1,0 +1,6 @@
+products:
+  host: products-ms
+  port: 9090
+authorization:
+  host: authorization-ms
+  port: 9091

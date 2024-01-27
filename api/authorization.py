@@ -4,11 +4,13 @@ from starlette.responses import JSONResponse
 
 import authorization_pb2
 import authorization_pb2_grpc
+import config
 from protantic import make_model, convert_from_proto, convert_to_proto
 
 router = APIRouter()
+conf = config.get_config()
 
-gRPC_channel = grpc.insecure_channel("authorization-ms:9091")
+gRPC_channel = grpc.insecure_channel(f"{conf['authorization']['host']}:{conf['authorization']['port']}")
 stub = authorization_pb2_grpc.AuthorizationStub(gRPC_channel)
 
 

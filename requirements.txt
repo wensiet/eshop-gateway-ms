@@ -20,3 +20,6 @@ soupsieve==2.5
 starlette==0.35.1
 typing_extensions==4.9.0
 uvicorn==0.27.0
+
+requests==2.31.0
+PyYAML==6.0.1

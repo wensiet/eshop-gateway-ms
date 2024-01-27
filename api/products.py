@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
+import config
 import schemas
 
 from protantic import make_model, convert_from_proto, convert_to_proto
@@ -11,8 +12,9 @@ import grpc
 import products_pb2_grpc
 
 router = APIRouter()
+conf = config.get_config()
 
-gRPC_channel = grpc.insecure_channel("products-ms:9090")
+gRPC_channel = grpc.insecure_channel(f"{conf['products']['host']}:{conf['products']['port']}")
 stub = products_pb2_grpc.ProductServStub(channel=gRPC_channel)
 
 
