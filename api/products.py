@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 import config
 import schemas
+from logmod import get_logger
 
 from protantic import make_model, convert_from_proto, convert_to_proto
 import products_pb2
@@ -17,6 +18,8 @@ conf = config.get_config()
 gRPC_channel = grpc.insecure_channel(f"{conf['products']['host']}:{conf['products']['port']}")
 stub = products_pb2_grpc.ProductServStub(channel=gRPC_channel)
 
+logger = get_logger(f"http://{conf['loki']['host']}:{conf['loki']['port']}/loki/api/v1/push")
+
 
 @router.get("/product/{pid}", tags=["Products"], responses={
     200: {"model": make_model(products_pb2.Product)},
@@ -25,10 +28,14 @@ stub = products_pb2_grpc.ProductServStub(channel=gRPC_channel)
 async def get_product(pid: str):
     try:
         response = stub.GetProduct(products_pb2.GetProductRequest(id=pid))
+        logger.info(f"returned product with id {pid}")
         return convert_from_proto(response)
     except grpc.RpcError as e:
-        print(e)
-        return JSONResponse(status_code=400, content={"error": e.details()})
+        logger.warning(f"unable to get product with id {pid}: {e.details()}")
+        if e.status_code == grpc.StatusCode.NOT_FOUND:
+            return JSONResponse(status_code=404, content={"error": e.details()})
+        else:
+            return JSONResponse(status_code=500, content={"error": e.details()})
 
 
 @router.get("/products", tags=["Products"], responses={

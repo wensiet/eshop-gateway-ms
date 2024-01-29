@@ -4,3 +4,6 @@ products:
 authorization:
   host: authorization-ms
   port: 9091
+loki:
+  host: loki
+  port: 3100
