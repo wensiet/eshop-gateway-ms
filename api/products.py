@@ -32,7 +32,7 @@ async def get_product(pid: str):
         return convert_from_proto(response)
     except grpc.RpcError as e:
         logger.warning(f"unable to get product with id {pid}: {e.details()}")
-        if e.status_code == grpc.StatusCode.NOT_FOUND:
+        if e.code() == grpc.StatusCode.NOT_FOUND:
             return JSONResponse(status_code=404, content={"error": e.details()})
         else:
             return JSONResponse(status_code=500, content={"error": e.details()})
@@ -43,8 +43,12 @@ async def get_product(pid: str):
     400: {"model": schemas.ErrorResponse}
 })
 async def get_products(page: int, limit: int = 10):
-    response = stub.GetProducts(products_pb2.GetProductsRequest(page=page, limit=limit))
-    return schemas.GetProductsResponse(response).model_dump()
+    try:
+        response = stub.GetProducts(products_pb2.GetProductsRequest(page=page, limit=limit))
+        return schemas.GetProductsResponse(response).model_dump()
+    except grpc.RpcError as e:
+        logger.warning(f"unable to get products: {e.details()}")
+        return JSONResponse(status_code=500, content={"error": "internal server error"})
 
 
 @router.post("/product", tags=["Products"], responses={
@@ -56,4 +60,7 @@ async def create_product(product: make_model(products_pb2.CreateProductRequest))
         response = stub.CreateProduct(convert_to_proto(products_pb2.CreateProductRequest, product))
         return convert_from_proto(response).model_dump()
     except grpc.RpcError as e:
-        return JSONResponse(status_code=400, content={"error": e.details()})
+        logger.warning(f"unable to create product: {e.details()}")
+        if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+            return JSONResponse(status_code=400, content={"error": e.details()})
+        return JSONResponse(status_code=500, content={"error": "internal server error"})

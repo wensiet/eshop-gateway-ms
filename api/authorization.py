@@ -24,7 +24,11 @@ async def login(request: make_model(authorization_pb2.LoginRequest)):
         return JSONResponse(convert_from_proto(response).model_dump(), status_code=200)
     except grpc.RpcError as e:
         logger.warning(f"user {request.email} failed to log in")
-        return JSONResponse(status_code=400, content={"error": e.details()})
+        if e.code() == grpc.StatusCode.NOT_FOUND:
+            return JSONResponse(status_code=404, content={"error": e.details()})
+        elif e.code() == grpc.StatusCode.UNAUTHENTICATED:
+            return JSONResponse(status_code=400, content={"error": e.details()})
+        return JSONResponse(status_code=500, content={"error": e.details()})
 
 
 @router.post("/register", tags=["Authorization"], responses={200: {
@@ -36,4 +40,8 @@ async def register(request: make_model(authorization_pb2.RegisterRequest)):
         return
     except grpc.RpcError as e:
         logger.warning(f"user {request.email} failed to register")
-        return JSONResponse(status_code=400, content={"error": e.details()})
+        if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+            return JSONResponse(status_code=400, content={"error": e.details()})
+        elif e.code() == grpc.StatusCode.ALREADY_EXISTS:
+            return JSONResponse(status_code=400, content={"error": e.details()})
+        return JSONResponse(status_code=500, content={"error": e.details()})
