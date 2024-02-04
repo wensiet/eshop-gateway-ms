@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 option go_package = "wensiet.authorization.v1;authorizationv1";
+// option py_generic_services = true;
 
 service Authorization {
   rpc Login(LoginRequest) returns (LoginResponse) {}
