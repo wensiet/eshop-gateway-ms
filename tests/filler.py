@@ -54,7 +54,7 @@ def save_to_json(product_info, filename):
 
 
 if __name__ == "__main__":
-    total = []
+    total = []  # dev image build
     while True:
         start = datetime.datetime.now()
         product_info = generate_product_info()
