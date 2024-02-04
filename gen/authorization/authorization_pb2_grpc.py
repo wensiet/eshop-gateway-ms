@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import authorization_pb2 as authorization__pb2
+from gen.authorization import authorization_pb2 as gen_dot_authorization_dot_authorization__pb2
 
 
 class AuthorizationStub(object):
@@ -16,13 +16,13 @@ class AuthorizationStub(object):
         """
         self.Login = channel.unary_unary(
                 '/Authorization/Login',
-                request_serializer=authorization__pb2.LoginRequest.SerializeToString,
-                response_deserializer=authorization__pb2.LoginResponse.FromString,
+                request_serializer=gen_dot_authorization_dot_authorization__pb2.LoginRequest.SerializeToString,
+                response_deserializer=gen_dot_authorization_dot_authorization__pb2.LoginResponse.FromString,
                 )
         self.Register = channel.unary_unary(
                 '/Authorization/Register',
-                request_serializer=authorization__pb2.RegisterRequest.SerializeToString,
-                response_deserializer=authorization__pb2.Empty.FromString,
+                request_serializer=gen_dot_authorization_dot_authorization__pb2.RegisterRequest.SerializeToString,
+                response_deserializer=gen_dot_authorization_dot_authorization__pb2.Empty.FromString,
                 )
 
 
@@ -46,13 +46,13 @@ def add_AuthorizationServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Login': grpc.unary_unary_rpc_method_handler(
                     servicer.Login,
-                    request_deserializer=authorization__pb2.LoginRequest.FromString,
-                    response_serializer=authorization__pb2.LoginResponse.SerializeToString,
+                    request_deserializer=gen_dot_authorization_dot_authorization__pb2.LoginRequest.FromString,
+                    response_serializer=gen_dot_authorization_dot_authorization__pb2.LoginResponse.SerializeToString,
             ),
             'Register': grpc.unary_unary_rpc_method_handler(
                     servicer.Register,
-                    request_deserializer=authorization__pb2.RegisterRequest.FromString,
-                    response_serializer=authorization__pb2.Empty.SerializeToString,
+                    request_deserializer=gen_dot_authorization_dot_authorization__pb2.RegisterRequest.FromString,
+                    response_serializer=gen_dot_authorization_dot_authorization__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -76,8 +76,8 @@ class Authorization(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Authorization/Login',
-            authorization__pb2.LoginRequest.SerializeToString,
-            authorization__pb2.LoginResponse.FromString,
+            gen_dot_authorization_dot_authorization__pb2.LoginRequest.SerializeToString,
+            gen_dot_authorization_dot_authorization__pb2.LoginResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -93,7 +93,7 @@ class Authorization(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Authorization/Register',
-            authorization__pb2.RegisterRequest.SerializeToString,
-            authorization__pb2.Empty.FromString,
+            gen_dot_authorization_dot_authorization__pb2.RegisterRequest.SerializeToString,
+            gen_dot_authorization_dot_authorization__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

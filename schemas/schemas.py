@@ -1,8 +1,9 @@
 from typing import List
 
+from fastapi import UploadFile
 from pydantic import BaseModel
 
-import products_pb2
+import gen.products.products_pb2 as products_pb2
 from protantic import make_model, convert_from_proto
 
 Product = make_model(products_pb2.Product)
@@ -18,6 +19,17 @@ class GetProductsResponse(BaseModel):
         for product in proto_message.products:
             products.append(convert_from_proto(product, pydantic_model=Product))
         super().__init__(total=total, products=products)
+
+
+class UploadImageRequest(BaseModel):
+    image: UploadFile
+    name: str
+    product_id: str
+
+
+class GetProductImagesResponse(BaseModel):
+    total: int
+    image_paths: List[str]
 
 
 class ErrorResponse(BaseModel):

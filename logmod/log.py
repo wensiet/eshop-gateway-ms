@@ -33,13 +33,14 @@ class LokiHandler(logging.Handler):
                     {
                         "stream":
                             {
-                                "op": "test.log_info",
+                                "environment": "local",
                                 "level": level,
                                 "service": "eshop-gateway-ms",
                             },
                         "values":
                             [
-                                [str(int(datetime.datetime.now().timestamp())) + "000000000", log_entry.message]
+                                [str(int(datetime.datetime.now().timestamp()))
+                                 + "000000000", log_entry.message]
                             ]
                     }
                 ]
@@ -52,7 +53,7 @@ class LokiHandler(logging.Handler):
 
 
 def get_logger(loki_url: str, repeat: bool = True) -> logging.Logger:
-    logger = logging.getLogger("logger")
+    logger = logging.getLogger("fastapi")
     logger.setLevel(logging.DEBUG)
     loki = LokiHandler(loki_url, repeat)
     logger.addHandler(loki)

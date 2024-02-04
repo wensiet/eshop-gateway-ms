@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import products_pb2 as products__pb2
+from gen.products import products_pb2 as gen_dot_products_dot_products__pb2
 
 
 class ProductServStub(object):
@@ -16,28 +16,28 @@ class ProductServStub(object):
         """
         self.GetProduct = channel.unary_unary(
                 '/product.ProductServ/GetProduct',
-                request_serializer=products__pb2.GetProductRequest.SerializeToString,
-                response_deserializer=products__pb2.Product.FromString,
+                request_serializer=gen_dot_products_dot_products__pb2.GetProductRequest.SerializeToString,
+                response_deserializer=gen_dot_products_dot_products__pb2.Product.FromString,
                 )
         self.GetProducts = channel.unary_unary(
                 '/product.ProductServ/GetProducts',
-                request_serializer=products__pb2.GetProductsRequest.SerializeToString,
-                response_deserializer=products__pb2.GetProductsResponse.FromString,
+                request_serializer=gen_dot_products_dot_products__pb2.GetProductsRequest.SerializeToString,
+                response_deserializer=gen_dot_products_dot_products__pb2.GetProductsResponse.FromString,
                 )
         self.CreateProduct = channel.unary_unary(
                 '/product.ProductServ/CreateProduct',
-                request_serializer=products__pb2.CreateProductRequest.SerializeToString,
-                response_deserializer=products__pb2.CreateProductResponse.FromString,
+                request_serializer=gen_dot_products_dot_products__pb2.CreateProductRequest.SerializeToString,
+                response_deserializer=gen_dot_products_dot_products__pb2.CreateProductResponse.FromString,
                 )
         self.UpdateProduct = channel.unary_unary(
                 '/product.ProductServ/UpdateProduct',
-                request_serializer=products__pb2.UpdateProductRequest.SerializeToString,
-                response_deserializer=products__pb2.Product.FromString,
+                request_serializer=gen_dot_products_dot_products__pb2.UpdateProductRequest.SerializeToString,
+                response_deserializer=gen_dot_products_dot_products__pb2.Product.FromString,
                 )
         self.DeleteProduct = channel.unary_unary(
                 '/product.ProductServ/DeleteProduct',
-                request_serializer=products__pb2.DeleteProductRequest.SerializeToString,
-                response_deserializer=products__pb2.DeleteProductResponse.FromString,
+                request_serializer=gen_dot_products_dot_products__pb2.DeleteProductRequest.SerializeToString,
+                response_deserializer=gen_dot_products_dot_products__pb2.DeleteProductResponse.FromString,
                 )
 
 
@@ -79,28 +79,28 @@ def add_ProductServServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.GetProduct,
-                    request_deserializer=products__pb2.GetProductRequest.FromString,
-                    response_serializer=products__pb2.Product.SerializeToString,
+                    request_deserializer=gen_dot_products_dot_products__pb2.GetProductRequest.FromString,
+                    response_serializer=gen_dot_products_dot_products__pb2.Product.SerializeToString,
             ),
             'GetProducts': grpc.unary_unary_rpc_method_handler(
                     servicer.GetProducts,
-                    request_deserializer=products__pb2.GetProductsRequest.FromString,
-                    response_serializer=products__pb2.GetProductsResponse.SerializeToString,
+                    request_deserializer=gen_dot_products_dot_products__pb2.GetProductsRequest.FromString,
+                    response_serializer=gen_dot_products_dot_products__pb2.GetProductsResponse.SerializeToString,
             ),
             'CreateProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateProduct,
-                    request_deserializer=products__pb2.CreateProductRequest.FromString,
-                    response_serializer=products__pb2.CreateProductResponse.SerializeToString,
+                    request_deserializer=gen_dot_products_dot_products__pb2.CreateProductRequest.FromString,
+                    response_serializer=gen_dot_products_dot_products__pb2.CreateProductResponse.SerializeToString,
             ),
             'UpdateProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateProduct,
-                    request_deserializer=products__pb2.UpdateProductRequest.FromString,
-                    response_serializer=products__pb2.Product.SerializeToString,
+                    request_deserializer=gen_dot_products_dot_products__pb2.UpdateProductRequest.FromString,
+                    response_serializer=gen_dot_products_dot_products__pb2.Product.SerializeToString,
             ),
             'DeleteProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteProduct,
-                    request_deserializer=products__pb2.DeleteProductRequest.FromString,
-                    response_serializer=products__pb2.DeleteProductResponse.SerializeToString,
+                    request_deserializer=gen_dot_products_dot_products__pb2.DeleteProductRequest.FromString,
+                    response_serializer=gen_dot_products_dot_products__pb2.DeleteProductResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -124,8 +124,8 @@ class ProductServ(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/product.ProductServ/GetProduct',
-            products__pb2.GetProductRequest.SerializeToString,
-            products__pb2.Product.FromString,
+            gen_dot_products_dot_products__pb2.GetProductRequest.SerializeToString,
+            gen_dot_products_dot_products__pb2.Product.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -141,8 +141,8 @@ class ProductServ(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/product.ProductServ/GetProducts',
-            products__pb2.GetProductsRequest.SerializeToString,
-            products__pb2.GetProductsResponse.FromString,
+            gen_dot_products_dot_products__pb2.GetProductsRequest.SerializeToString,
+            gen_dot_products_dot_products__pb2.GetProductsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -158,8 +158,8 @@ class ProductServ(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/product.ProductServ/CreateProduct',
-            products__pb2.CreateProductRequest.SerializeToString,
-            products__pb2.CreateProductResponse.FromString,
+            gen_dot_products_dot_products__pb2.CreateProductRequest.SerializeToString,
+            gen_dot_products_dot_products__pb2.CreateProductResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -175,8 +175,8 @@ class ProductServ(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/product.ProductServ/UpdateProduct',
-            products__pb2.UpdateProductRequest.SerializeToString,
-            products__pb2.Product.FromString,
+            gen_dot_products_dot_products__pb2.UpdateProductRequest.SerializeToString,
+            gen_dot_products_dot_products__pb2.Product.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -192,7 +192,7 @@ class ProductServ(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/product.ProductServ/DeleteProduct',
-            products__pb2.DeleteProductRequest.SerializeToString,
-            products__pb2.DeleteProductResponse.FromString,
+            gen_dot_products_dot_products__pb2.DeleteProductRequest.SerializeToString,
+            gen_dot_products_dot_products__pb2.DeleteProductResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

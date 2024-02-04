@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package images;
+
+option go_package = "wensiet.images.v1;imagesv1";
+
+service Images {
+  rpc UploadImage(UploadImageRequest) returns (Empty) {}
+  rpc GetProductImages(GetProductImagesRequest) returns (GetProductImagesResponse) {}
+}
+
+message Empty {
+}
+
+message UploadImageRequest {
+  bytes image = 1;
+  string name = 2;
+  string product_id = 3;
+}
+
+message GetProductImagesRequest {
+  string product_id = 1;
+}
+
+message GetProductImagesResponse {
+  int32 total = 1;
+  repeated string image_paths = 2;
+}

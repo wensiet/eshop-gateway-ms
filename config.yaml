@@ -1,3 +1,4 @@
+env: local
 products:
   host: products-ms
   port: 9090
@@ -5,5 +6,6 @@ authorization:
   host: authorization-ms
   port: 9091
 loki:
-  host: loki
+  host: 213.226.125.222
   port: 3100
+domain: http://localhost
