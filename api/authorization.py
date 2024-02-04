@@ -1,5 +1,5 @@
 import grpc
-from grpc.aio._call import AioRpcError
+from grpc._channel import _InactiveRpcError
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
@@ -26,7 +26,7 @@ async def login(request: make_model(authorization_pb2.LoginRequest)):
         response = stub.Login(convert_to_proto(authorization_pb2.LoginRequest, request))
         logger.info(f"user {request.email} logged in")
         return JSONResponse(convert_from_proto(response).model_dump(), status_code=200)
-    except AioRpcError as e:
+    except _InactiveRpcError as e:
         logger.warning(f"user {request.email} failed to log in")
         if e.code() == grpc.StatusCode.NOT_FOUND:
             return JSONResponse(status_code=404, content={"error": e.details()})
@@ -45,7 +45,7 @@ async def register(request: make_model(authorization_pb2.RegisterRequest)):
         stub.Register(convert_to_proto(authorization_pb2.RegisterRequest, request))
         logger.info(f"user {request.email} registered")
         return
-    except AioRpcError as e:
+    except _InactiveRpcError as e:
         logger.warning(f"user {request.email} failed to register")
         if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
             return JSONResponse(status_code=400, content={"error": e.details()})
