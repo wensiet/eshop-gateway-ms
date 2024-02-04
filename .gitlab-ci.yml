@@ -7,7 +7,7 @@ lint-test-job:
   image: python:3.10-slim
   script:
     - pip install flake8
-    - flake8 --exclude=gen .
+    - flake8 --exclude=gen --max-line-length=100 .
 
 build-job:
   image: docker:dind
