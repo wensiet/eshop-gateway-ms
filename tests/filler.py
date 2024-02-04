@@ -30,7 +30,8 @@ def get_random_description(url):
 def generate_product_info():
     titles_url = ("https://raw.githubusercontent.com/first20hours/"
                   "google-10000-english/master/google-10000-english-usa-no-swears-medium.txt")
-    descriptions_url = "https://raw.githubusercontent.com/dariusk/corpora/master/data/foods/fruits.json"
+    descriptions_url = ("https://raw.githubusercontent.com/"
+                        "dariusk/corpora/master/data/foods/fruits.json")
 
     title = get_random_text_from_github(descriptions_url)
     description = get_random_description(titles_url)
