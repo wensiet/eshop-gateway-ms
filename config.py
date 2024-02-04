@@ -1,6 +1,10 @@
+import os
+
 import yaml
 
-CONFIG_PATH = "config.yaml"
+CONFIG_PATH = "config/config_local.yaml"
+if os.getenv("DOCKER_ENV") == "true":
+    CONFIG_PATH = "config/config_docker.yaml"
 
 
 def get_config():

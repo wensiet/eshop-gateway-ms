@@ -1,0 +1,11 @@
+env: local
+products:
+  host: eshop-products-service
+  port: 9090
+authorization:
+  host: eshop-auth-service
+  port: 9091
+loki:
+  host: 213.226.125.222
+  port: 3100
+domain: http://localhost
