@@ -18,6 +18,7 @@ import schemas
 from logmod import get_logger
 
 import grpc
+from grpc.aio._call import AioRpcError
 
 router = APIRouter()
 conf = config.get_config()
@@ -39,12 +40,15 @@ async def get_product(pid: str):
         response = stub.GetProduct(products_pb2.GetProductRequest(id=pid))
         logger.info(f"returned product with id {pid}")
         return convert_from_proto(response)
-    except grpc.RpcError as e:
+    except AioRpcError as e:
         logger.warning(f"unable to get product with id {pid}: {e.details()}")
         if e.code() == grpc.StatusCode.NOT_FOUND:
             return JSONResponse(status_code=404, content={"error": e.details()})
         else:
             return JSONResponse(status_code=500, content={"error": e.details()})
+    except Exception as e:
+        logger.error(f"unexpected error: {e}")
+        return JSONResponse(status_code=500, content={"error": "unexpected error"})
 
 
 @router.get("/products", tags=["Products"], responses={
@@ -55,7 +59,7 @@ async def get_products(page: int, limit: int = 10):
     try:
         response = stub.GetProducts(products_pb2.GetProductsRequest(page=page, limit=limit))
         return schemas.GetProductsResponse(response).model_dump()
-    except grpc.RpcError as e:
+    except AioRpcError as e:
         logger.warning(f"unable to get products: {e.details()}")
         return JSONResponse(status_code=500, content={"error": "internal server error"})
 
@@ -68,11 +72,14 @@ async def create_product(product: make_model(products_pb2.CreateProductRequest))
     try:
         response = stub.CreateProduct(convert_to_proto(products_pb2.CreateProductRequest, product))
         return convert_from_proto(response).model_dump()
-    except grpc.RpcError as e:
+    except AioRpcError as e:
         logger.warning(f"unable to create product: {e.details()}")
         if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
             return JSONResponse(status_code=400, content={"error": e.details()})
         return JSONResponse(status_code=500, content={"error": "internal server error"})
+    except Exception as e:
+        logger.error(f"unexpected error: {e}")
+        return JSONResponse(status_code=500, content={"error": "unexpected error"})
 
 
 @router.post("/product/images/upload", tags=["Products"], responses={})
@@ -89,11 +96,14 @@ async def upload_product_images(request_image: UploadFile,
                                           name=request_image_name,
                                           product_id=request_product_id))
         return JSONResponse(status_code=200, content={"message": "ok"})
-    except grpc.RpcError as e:
+    except AioRpcError as e:
         logger.warning(f"unable to upload image: {e.details()}")
         if e.code() == grpc.StatusCode.NOT_FOUND:
             return JSONResponse(status_code=404, content={"error", e.details()})
         return JSONResponse(status_code=500, content={"error": "internal server error"})
+    except Exception as e:
+        logger.error(f"unexpected error: {e}")
+        return JSONResponse(status_code=500, content={"error": "unexpected error"})
 
 
 @router.get("/product/images", tags=["Products"], responses={})
@@ -110,8 +120,11 @@ async def get_product_images(product_id: str):
             result.image_paths[i] = conf['domain'] + "/media/products/" + path
         return JSONResponse(status_code=200,
                             content=result.model_dump())
-    except grpc.RpcError as e:
+    except AioRpcError as e:
         logger.warning(f"unable to get images: {e.details()}")
         if e.code() == grpc.StatusCode.NOT_FOUND:
             return JSONResponse(status_code=404, content={"error", e.details()})
         return JSONResponse(status_code=500, content={"error": "internal server error"})
+    except Exception as e:
+        logger.error(f"unexpected error: {e}")
+        return JSONResponse(status_code=500, content={"error": "unexpected error"})
