@@ -18,6 +18,8 @@ stub = authorization_pb2_grpc.AuthorizationStub(gRPC_channel)
 logger = get_logger(f"http://{conf['loki']['host']}:{conf['loki']['port']}/loki/api/v1/push")
 
 
+# CI CR TEST
+
 @router.post("/login", tags=["Authorization"])
 async def login(request: make_model(authorization_pb2.LoginRequest)):
     try:
