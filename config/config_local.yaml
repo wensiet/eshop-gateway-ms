@@ -1,4 +1,8 @@
 env: local
+port: 8000
+domain: http://localhost:9000
+path: ""
+sentry: https://667b4cfbf3b29df190748ccac1ee04d8@o4506655030378496.ingest.sentry.io/4506655032147968
 products:
   host: localhost
   port: 9090
@@ -8,4 +12,8 @@ authorization:
 loki:
   host: 213.226.125.222
   port: 3100
-domain: http://localhost
+redis:
+  host: localhost
+  port: 6379
+  db: 2
+  password: pass
